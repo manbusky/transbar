@@ -12,12 +12,20 @@ var timeArray = FixedArray(10);
 $(document).ready(function() {
 
 	$("#mainQ").keyup(function(event) {
-		
-		clearTimeout(timerNumber);
 
-		if(event.keyCode == 13) {
-			searchNow();
-		} else {
+		var eventCode = event.keyCode;
+
+		if(eventCode == 13) { searchNow(); return; }
+
+		var currentValue = $.trim($("#mainQ").val());
+		var storageValue = $("#mainQ").data("Q");
+
+		if(currentValue != storageValue) {
+			
+			$("#mainQ").data("Q", currentValue);
+
+			clearTimeout(timerNumber);
+
 			timerNumber = setTimeout(searchNow, 200);
 		}
 
@@ -103,4 +111,17 @@ function clearShowPanel() {
 
 	ipcRenderer.sendSync('render-resize', 0);
 }
+
+ipcRenderer.on("clipboard-paste", (event, message) => {
+	
+	$("#mainQ").val(message);
+
+	var currentValue = $.trim($("#mainQ").val());
+	var storageValue = $("#mainQ").data("Q");
+
+	if(currentValue != storageValue) {
+		searchNow();
+	}
+
+});
 

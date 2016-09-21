@@ -1,9 +1,11 @@
 
 var httpclient = require('node-httpclient');
 
-var config = require('config');
+var config = require('../config');
 
 function translate(q, time, callback) {
+
+	console.log(config);
 
 	var url = config.api + q;
 

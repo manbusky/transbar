@@ -5,11 +5,11 @@ var config = require('../config');
 
 function translate(q, time, callback) {
 
-	console.log(config);
-
 	var url = config.api + q;
 
 	var promise = httpclient.get(url);
+
+	// console.log("translate: " + q);
 
 	promise.success(function success(result) {
 
@@ -21,6 +21,8 @@ function translate(q, time, callback) {
 	  		
 	  		var data = result.data;
 	  		
+	  		console.log(data);
+
 	  		if(data && data.basic) {
 	  			callback(time, data);
 	  		}

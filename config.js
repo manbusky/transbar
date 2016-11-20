@@ -1,4 +1,4 @@
 
 module.exports = {
-	"api": "http://t.manbusky.com/q="
+	"api": "【有道 API 地址】"
 }

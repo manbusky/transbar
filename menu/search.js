@@ -3,6 +3,7 @@ window.$ = window.jQuery = require('../assets/js/jquery.min.js');
 
 var translate = require('./translate');
 var FixedArray = require('fixed-array');
+var wordView = require('./word_view');
 const {ipcRenderer} = require('electron');
 
 
@@ -42,7 +43,7 @@ function searchNow() {
 
 	var q = $.trim($("#mainQ").val());
 
-	if(q.length == 0) { clearShowPanel(); }
+	if(q.length == 0) { clearShowPanel(); return; }
 
 	var time = (new Date()).getTime();
 
@@ -63,32 +64,19 @@ function searchNow() {
 
 function renderView(data) {
 
-	var query = data.query;
-	var translation = data.translation.join(",");
-	var ukPhonetic = data.basic["uk-phonetic"];
-	var usPhonetic = data.basic["us-phonetic"];	
-	var explains = data.basic.explains;
-
-	var title = query + "&nbsp;&nbsp;" + "<strong>"+translation+"</strong>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-
-	if(ukPhonetic) {
-		title += "英：[" + ukPhonetic + "]";
-	}
-	if(usPhonetic) {
-		title += "&nbsp;&nbsp;&nbsp;美：[" + usPhonetic + "]";
-	}
+	var view = wordView(data);
 
 	newShowPanel();
 
-	$("#showPanel").find(".panel").append(newOne(title));
+	$("#showPanel").find(".panel").append(newOne(view.title));
 
-	explains.forEach((item) => {
+	view.explains.forEach((item) => {
 	
 		$("#showPanel").find(".panel").append(newOne(item));
 
 	});
 
-	ipcRenderer.sendSync('render-resize', explains.length);
+	ipcRenderer.sendSync('render-resize', view.explains.length);
 }
 
 function newShowPanel() {

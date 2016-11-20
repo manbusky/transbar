@@ -4,6 +4,9 @@
   "description": "Translate English word to Chinese",
   "main": "index.js",
   "dependencies": {
+    "electron": "^1.4.0",
+    "electron-json-storage": "^2.0.0",
+    "electron-positioner": "^3.0.0",
     "electron-prebuilt": "^1.4.0",
     "emojilib": "2.0.2",
     "fixed-array": "^1.0.0",
